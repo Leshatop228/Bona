@@ -1,0 +1,89 @@
+# параметры для создания игрового поля
+# количество клеток
+size_board = 3
+# игровое поле
+board = [1,2,3,4,5,6,7,8,9]
+
+
+def draw_game_board():
+    '''Выводим игровое ччччполе'''
+    print("_"*4*size_board)
+    for i in range(size_board):
+        print("|",(" " * 3 + "|")*3)
+        print("|","",board[i*3],"|",board[1+i*3],"|",board[2+i*3],"|")
+        print("|",("_" * 3 + "|") * 3)
+
+def Is_number(input_string):
+    '''Проверка , ввел ли игрок число'''
+    try:
+        float(input_string)
+        return True
+    except ValueError:
+        return False
+
+
+
+def game_step(index,char):
+
+    if  ((index) > 9 or (index < 1) or (board[index-1] in ("X","O"))):
+        return False
+    board[index-1] = char
+    return True
+def checkwin():
+    '''Проверка победы одного игрока'''
+    win = False
+    # создаем кортеж с комбинациями
+    win_combination = (
+        (0,1,2),(3,4,5),(6,7,8),
+        (0,3,6),(1,4,7),(2,5,8),
+        (0,4,8),(2,4,6)
+    )
+    # если комбинация совпадает с позицией , то игрок имеет выиграшную комбинацию
+    for pos in win_combination:
+        if (board[pos[0]]==board[pos[1]] and board[pos[1]] == board[pos[2]]):
+            win = board[pos[0]]
+    return win
+def start_krestiki_noliki():
+    # текущий игрок
+    current_player = "X"
+    # номер шага
+    step = 1
+    draw_game_board()
+
+    while (step<10 and (checkwin() == False)) :
+        index = input('Ходит игрок: ' + current_player + '. Введите номер поля (0-выход):')
+        if Is_number(index):
+            if index == "0":
+                break
+        else:
+            print("Вы ввели не число , начните заново")
+
+        # если получилось сделать шаг
+
+        if (game_step(int(index),current_player)):
+            print("Удачный ход")
+
+            if (current_player == "X" ):
+                current_player = "0"
+            else:
+                current_player = "X"
+
+            draw_game_board()
+            # увеличим номер шага
+            step += 1
+        else:
+            print("Неверный номер. Повторите!")
+
+    if (step==10):
+        print("Игра окончена. Ничья!")
+    else:
+        print("Выиграл -" +  checkwin())
+
+
+
+
+
+
+
+print("Добро пожаловать в крестики нолики")
+start_krestiki_noliki()
