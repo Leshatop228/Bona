@@ -24,7 +24,8 @@ def Is_number(input_string):
 
 
 def game_step(index,char):
-
+    '''Функции хода игрока'''
+    #char = текущий игрок
     if  ((index) > 9 or (index < 1) or (board[index-1] in ("X","O"))):
         return False
     board[index-1] = char
@@ -33,24 +34,20 @@ def checkwin():
     '''Проверка победы одного игрока'''
     win = False
     # создаем кортеж с комбинациями
-    win_combination = (
-        (0,1,2),(3,4,5),(6,7,8),
-        (0,3,6),(1,4,7),(2,5,8),
-        (0,4,8),(2,4,6)
-    )
+    win_combination = ((0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6))
     # если комбинация совпадает с позицией , то игрок имеет выиграшную комбинацию
     for pos in win_combination:
         if (board[pos[0]]==board[pos[1]] and board[pos[1]] == board[pos[2]]):
             win = board[pos[0]]
     return win
-def start_krestiki_noliki():
+def start_game():
     # текущий игрок
     current_player = "X"
     # номер шага
     step = 1
     draw_game_board()
 
-    while (step<10 and (checkwin() == False)) :
+    while (step<=9 and (checkwin() == False)) :
         index = input('Ходит игрок: ' + current_player + '. Введите номер поля (0-выход):')
         if Is_number(index):
             if index == "0":
@@ -74,10 +71,10 @@ def start_krestiki_noliki():
         else:
             print("Неверный номер. Повторите!")
 
-    if (step==10):
+    if (step == 10):
         print("Игра окончена. Ничья!")
     else:
-        print("Выиграл -" +  checkwin())
+        print("Выиграл" +  checkwin())
 
 
 
@@ -86,4 +83,4 @@ def start_krestiki_noliki():
 
 
 print("Добро пожаловать в крестики нолики")
-start_krestiki_noliki()
+start_game()
